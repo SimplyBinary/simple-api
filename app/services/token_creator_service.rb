@@ -1,6 +1,10 @@
 class TokenCreatorService
 
-  def intialize(user, password)
+  HMAC_SECRET = 'someawesomesecretkey'
+
+  attr_accessor :user, :password
+
+  def initialize(user, password)
     @user = user
     @password = password
   end
@@ -13,12 +17,12 @@ class TokenCreatorService
 
   private
 
-  def password_is_valid?(password)
-    user&.authenticate(params[:password])
+  def password_is_valid?
+    user&.authenticate(password)
   end
 
   def tokenize_user_id
-    JsonWebToken.encode(user_id: user.id)
+    JWT.encode({user_id: user.id}, HMAC_SECRET, 'HS256')
   end
 
 end
