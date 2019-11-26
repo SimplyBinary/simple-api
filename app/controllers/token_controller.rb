@@ -2,7 +2,7 @@ class TokenController < ActionController::API
 	
 	def create
 
-          if token = TokenCreatorService.new(user, params[:passswor])
+    if token = TokenCreatorService.new(user, params[:passswor]).run
 			render json: UserSerializer.new(user, params:{token: token})
 		else
 			 render json: { error: 'unauthorized' }, status: :unauthorized
